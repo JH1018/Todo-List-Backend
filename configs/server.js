@@ -6,6 +6,7 @@ import morgan from "morgan";
 import express from "express";
 import { connectionDB } from "./mongo.js";
 import taskRoutes from "../src/task/task.routes.js";
+import { swaggerDocs, swaggerUi } from "./swagger.js";
 
 const middlewares = (app) => {
     app.use(helmet());
@@ -16,28 +17,33 @@ const middlewares = (app) => {
 }
 
 export const connectionMongoDB = async () => {
-    try{
+    try {
         await connectionDB();
-    }catch(err){
+    } catch (err) {
         console.log(`Data Base connection is failed, please try again ${err}`);
     };
 };
 
-const routes = (app) =>{
+const routes = (app) => {
     app.use("/toDoList/v1/task", taskRoutes);
+    app.use(
+        "/toDoList/v1/docs",
+        swaggerUi.serve,
+        swaggerUi.setup(swaggerDocs)
+    );
 };
 
-export const initServer = () =>{
+export const initServer = () => {
     const app = express();
     const timeInit = Date.now();
-    try{
+    try {
         middlewares(app);
         connectionDB();
         app.listen(process.env.PORT);
         routes(app);
         const elapsedTime = Date.now() - timeInit;
         console.log(`Server running on port ${process.env.PORT} ${elapsedTime}ms`);
-    }catch(err){
+    } catch (err) {
         console.log(`Server failed to start: ${err}`);
     };
 };
