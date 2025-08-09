@@ -27,6 +27,13 @@ export const updateTaskValidator = [
     catchErrors
 ]
 
+export const updateTaskStatusValidator = [
+    param("uid").isMongoId().withMessage("El ID de la tarea no es válido"),
+    body("status").isIn(["PENDIENTE", "PROGRESO", "COMPLETADA"]).withMessage("El estado no es válido"),
+    validationsFields,
+    catchErrors
+];
+
 export const deleteTaskValidator = [
     param("uid").isMongoId().withMessage("El ID de la tarea no es válido"),
     validationsFields,

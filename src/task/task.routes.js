@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createTask, getTasks, getTasksByStatus, updateTask, deleteTask } from "./task.controller.js";
-import { createTaskValidator, getTasksByStatusValidator, updateTaskValidator, deleteTaskValidator } from "../middlewares/task-validator.js";
+import { createTask, getTasks, getTasksByStatus, updateTask, deleteTask, updateTaskStatus } from "./task.controller.js";
+import { createTaskValidator, getTasksByStatusValidator, updateTaskValidator, deleteTaskValidator, updateTaskStatusValidator } from "../middlewares/task-validator.js";
 
 const router = Router();
 
@@ -166,6 +166,47 @@ router.patch(
     "/deleteTask/:uid",
     deleteTaskValidator,
     deleteTask
+);
+
+
+/**
+ * @swagger
+ * /updateTaskStatus/{uid}:
+ *   patch:
+ *     summary: Actualiza el estado de una tarea
+ *     tags: [Tasks]
+ *     parameters:
+ *       - in: path
+ *         name: uid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID de la tarea
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [PENDIENTE, PROGRESO, COMPLETADA]
+ *     responses:
+ *       200:
+ *         description: Estado de la tarea actualizado correctamente
+ *       400:
+ *         description: Parámetros inválidos
+ *       404:
+ *         description: Tarea no encontrada
+ *       500:
+ *         description: Error al actualizar el estado de la tarea
+ */
+
+router.patch(
+    "/updateTaskStatus/:uid",
+    updateTaskStatusValidator,
+    updateTaskStatus
 );
 
 export default router;

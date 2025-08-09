@@ -92,6 +92,28 @@ export const updateTask = async (req, res) => {
     }
 };
 
+export const updateTaskStatus = async (req, res) => {
+    try {
+        const { uid } = req.params;
+        const { status } = req.body;
+
+        const task = await Task.findByIdAndUpdate(uid, { status: status }, { new: true });
+
+        return res.status(200).json({
+            success: true,
+            message: "Estado de la tarea actualizado correctamente",
+            task
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Error al actualizar el estado de la tarea",
+            error: err.message
+        });
+    }
+};
+
 export const deleteTask = async (req, res) => {
     try {
         const { uid } = req.params;
