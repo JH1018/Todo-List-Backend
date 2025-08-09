@@ -21,7 +21,7 @@ export const createTask = async (req, res) => {
     }
 };
 
-export const getTasks = async (res) => {
+export const getTasks = async (req, res) => {
     try {
         const query = { isActive: true };
 
@@ -39,9 +39,9 @@ export const getTasks = async (res) => {
     } catch (err) {
         return res.status(500).json({
             success: false,
-            message: "Error al obtener las tareas",
+            message: "Error al crear la tarea",
             error: err.message
-        })
+        });
     }
 };
 

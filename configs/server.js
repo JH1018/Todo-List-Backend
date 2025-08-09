@@ -5,6 +5,7 @@ import cors from "cors";
 import morgan from "morgan";
 import express from "express";
 import { connectionDB } from "./mongo.js";
+import taskRoutes from "../src/task/task.routes.js";
 
 const middlewares = (app) => {
     app.use(helmet());
@@ -22,6 +23,10 @@ export const connectionMongoDB = async () => {
     };
 };
 
+const routes = (app) =>{
+    app.use("/toDoList/v1/task", taskRoutes);
+};
+
 export const initServer = () =>{
     const app = express();
     const timeInit = Date.now();
@@ -29,6 +34,7 @@ export const initServer = () =>{
         middlewares(app);
         connectionDB();
         app.listen(process.env.PORT);
+        routes(app);
         const elapsedTime = Date.now() - timeInit;
         console.log(`Server running on port ${process.env.PORT} ${elapsedTime}ms`);
     }catch(err){
