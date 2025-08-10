@@ -68,7 +68,7 @@ router.get(
 /**
  * @swagger
  * /task/getTasksByStatus:
- *   get:
+ *   post:
  *     summary: Obtiene tareas por estado
  *     tags: [Tasks]
  *     parameters:
@@ -87,7 +87,7 @@ router.get(
  *       500:
  *         description: Error al obtener las tareas
  */
-router.get(
+router.post(
     "/getTasksByStatus",
     getTasksByStatusValidator,
     getTasksByStatus
